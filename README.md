@@ -15,7 +15,6 @@ This app processes transaction data from text files and computes key sales metri
 - **Python**: Core programming language.
 - **Flask**: Backend API:
 - **HTML, CSS, Tailwind**: Frontend Display
-- **AWS**
 
 ## Usage
 - clone the repo
