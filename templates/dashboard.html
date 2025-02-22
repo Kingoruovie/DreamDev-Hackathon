@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moniepoint Sales Analytics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --moniepoint-purple: #0357ee;
+            --moniepoint-light-purple: #246df0;
+            --moniepoint-dark: #1F2937;
+        }
+        
+        body {
+            background-color: #F3F4F6;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .moniepoint-header {
+            background: linear-gradient(135deg, var(--moniepoint-purple), var(--moniepoint-light-purple));
+            color: white;
+        }
+        
+        .stat-value {
+            color: var(--moniepoint-purple);
+        }
+        
+        .stat-label {
+            color: var(--moniepoint-dark);
+        }
+    </style>
+</head>
+<body>
+    <header class="moniepoint-header p-6">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">DreamDev Sales Analytics</h1>
+            <p class="mt-2 opacity-90">Real-time transaction insights</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-8 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Highest Daily Volume -->
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4 stat-label">Highest Sales Volume</h2>
+                <div class="space-y-2">
+                    <p class="text-2xl font-bold stat-value">{{ report.highest_daily_volume.volume }} units</p>
+                    <p class="text-gray-600">Date: {{ report.highest_daily_volume.date }}</p>
+                </div>
+            </div>
+
+            <!-- Highest Daily Value -->
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4 stat-label">Highest Sales Value</h2>
+                <div class="space-y-2">
+                    <p class="text-2xl font-bold stat-value">{{ format_currency(report.highest_daily_value.value) }}</p>
+                    <p class="text-gray-600">Date: {{ report.highest_daily_value.date }}</p>
+                </div>
+            </div>
+
+            <!-- Most Sold Product -->
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4 stat-label">Most Sold Product</h2>
+                <div class="space-y-2">
+                    <p class="text-2xl font-bold stat-value">{{ report.most_sold_product.volume }} units</p>
+                    <p class="text-gray-600">Product ID: {{ report.most_sold_product.product_id }}</p>
+                </div>
+            </div>
+
+            <!-- Busiest Hour -->
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4 stat-label">Busiest Hour</h2>
+                <div class="space-y-2">
+                    <p class="text-2xl font-bold stat-value">{{ report.busiest_hour.hour|format_hour }}</p>
+                    <p class="text-gray-600">Avg. {{ "%.2f"|format(report.busiest_hour.average_transactions) }} transactions/day</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Top Performers -->
+        <div class="mt-8">
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4 stat-label">Top Performing Staff by Month</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left border-b">
+                                <th class="pb-3">Month</th>
+                                <th class="pb-3">Staff ID</th>
+                                <th class="pb-3">Sales Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for month, data in report.top_staff_by_month.items() %}
+                            <tr class="border-b">
+                                <td class="py-3">{{ month }}</td>
+                                <td class="py-3">{{ data.staff_id }}</td>
+                                <td class="py-3 stat-value">{{ format_currency(data.sales) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 mt-8 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-600">
+            © 2024 Moniepoint Analytics Dashboard
+        </div>
+    </footer>
+</body>
+</html>
